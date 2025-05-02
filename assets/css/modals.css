@@ -1,0 +1,39 @@
+.modal-overlay {
+    @apply bg-secondary-900/20 cursor-pointer fixed inset-0 flex items-end md:items-center md:justify-center z-[200] backdrop-blur-sm;
+}
+.modal-container-wrapper {
+    max-height: 100vh;
+    @apply cursor-pointer fixed py-10 inset-0 flex items-end md:items-center max-w-[100vw] md:pb-4 md:justify-center z-[201] overflow-y-auto;
+}
+.modal-container-wrapper.fullscreen {
+
+}
+.modal-container {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.01);
+    max-height: 95vh;
+    @apply bg-secondary-100 p-[30px] overflow-auto md:max-h-none rounded-xl md:max-w-[560px] w-full cursor-auto;
+}
+.modal-container.simple {
+    border-radius: 0 !important;
+    @apply bg-secondary-500;
+}
+.modal-container.fullscreen {
+    min-height: 100vh;
+    max-height: 100vh;
+    @apply md:max-w-[100vw] min-w-[100vw] p-[30px] m-0 overflow-y-auto md:-mb-4 md:pt-[50px];
+}
+.modal-title {
+    @apply font-bold text-3xl flex gap-x-4 items-center;
+}
+.modal-title.fullscreen {
+    @apply max-w-screen-lg mx-auto;
+}
+.modal-inner {
+    @apply mt-6;
+}
+.modal-inner.fullscreen {
+    @apply max-w-screen-lg mx-auto;
+}
+.modal-close {
+    @apply w-10 h-10 flex items-center justify-center transition cursor-pointer hover:bg-secondary-700 rounded-xl text-2xl text-zinc-400 hover:text-zinc-200;
+}

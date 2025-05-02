@@ -1,0 +1,27 @@
+.vue-notification-group {
+    position: absolute !important;
+}
+.vue-notification {
+    margin: 5px !important;
+    color: #ffffff;
+    border-left: none !important;
+    padding: 16px 24px !important;
+    font-size: 1rem !important;
+    z-index: 9999;
+    @apply bg-[#44a4fc] hover:bg-[#187fe7] transition rounded-lg px-[30px] py-[20px] top-1;
+}
+.vue-notification.success {
+    background-color: #1f8b3f30 !important;
+    @apply hover:bg-[#1f8b3f] text-green-600 backdrop-blur-lg;
+}
+.vue-notification.warn {
+    background-color: #f3e294 !important;
+    @apply text-accent-500;
+}
+.vue-notification.error {
+    background-color: #c1352c30 !important;
+    @apply text-red-500;
+}
+.notification-title {
+    @apply text-xs uppercase font-bold mb-2;
+}
