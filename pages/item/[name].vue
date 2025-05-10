@@ -1,42 +1,41 @@
 <script setup>
-import {navigateTo} from "#app";
-
 const store = useAppStore()
 const favoritesStore = useFavoritesStore()
 const route = useRoute()
 const {t} = useI18n()
+const {notify} = useNotification()
 definePageMeta({
   validate: (route) => {
-    return typeof route.params.name === 'string'
+    return typeof route.params?.name === 'string'
   }
 })
 const productId = computed(() => getIdFromCanonicalUrl(route.params?.name?.toString()))
-const {data: productData} = await useAsyncData('product', () => $api(`/products/${productId.value}`).catch(() => null))
+const {data: productData} = await useAsyncData('product', () => $api(`/products/${productId?.value}`).catch(() => null))
 if (!productData?.value) {
   await navigateTo("/")
 }
-const product = computed(() => productData.value?.payload)
-const {data: rootCategoryData} = productData.value?.payload?.category?.category_id ?
-    await useAsyncData('root-category', () => $api(`/categories/${product.value?.category?.category_id}`)) : ref({
+const product = computed(() => productData?.value?.payload)
+const {data: rootCategoryData} = productData?.value?.payload?.category?.category_id ?
+    await useAsyncData('root-category', () => $api(`/categories/${product?.value?.category?.category_id}`)) : ref({
       data: null
     })
-const rootCategory = computed(() => rootCategoryData.value?.payload)
+const rootCategory = computed(() => rootCategoryData?.value?.payload)
 
 onBeforeMount(() => {
-  store.setTitle(product.value?.name)
+  store.setTitle(product?.value?.name)
   useHead({
-    title: product.value?.name
+    title: product?.value?.name
   })
 })
 
-const breadcrumbItems = computed(() => ([... rootCategory.value?.id ? [{
-  title: rootCategory.value?.name,
-  path: `/category/${getCanonicalUrl(rootCategory.value)}`,
+const breadcrumbItems = computed(() => ([... rootCategory?.value?.id ? [{
+  title: rootCategory?.value?.name,
+  path: `/category/${getCanonicalUrl(rootCategory?.value)}`,
 }] : [], {
-  title: product.value?.category?.name,
-  path: `/category/${getCanonicalUrl(product.value?.category)}`,
+  title: product?.value?.category?.name,
+  path: `/category/${getCanonicalUrl(product?.value?.category)}`,
 }, {
-  title: product.value?.name,
+  title: product?.value?.name,
   path: ''
 }]))
 const currentImage = ref(null)
@@ -44,14 +43,44 @@ const tabs = ref([{
   title: t('details'),
   value: 'details'
 }, {
-  title: t('reviews'),
+  title: t('reviews.title'),
   value: 'reviews'
 }])
 const currentTab = ref('details')
 
 const addFavorite = () => {
-  if (!product?.value?.id) return false
-  favoritesStore.addFavorite(product.value?.id).then(console.log).catch(console.error)
+  favoritesStore.addFavorite(product?.value?.id).then(() => {
+    notify({
+      type: 'success',
+      title: t('success'),
+      text: t('addFavoriteSuccess')
+    })
+  }).catch(() => {
+    notify({
+      type: 'error',
+      title: t('error'),
+      text: t('addFavoriteError')
+    })
+  })
+}
+const removeFavorite = () => {
+  if (!product?.value?.id ||
+      !favoritesStore.isFavorite(product.value.id)) return false
+  const favoriteId = favoritesStore.getFavoriteId(+product.value?.id)
+  if (!favoriteId) return false
+  favoritesStore.removeFavorite(favoriteId).then(() => {
+    notify({
+      type: 'success',
+      title: t('success'),
+      text: t('removeFavoriteSuccess')
+    })
+  }).catch(() => {
+    notify({
+      type: 'error',
+      title: t('error'),
+      text: t('removeFavoriteError')
+    })
+  })
 }
 </script>
 
@@ -91,6 +120,7 @@ const addFavorite = () => {
         </div>
         <div class="product_rating">
           {{ t('rating') }} {{ product?.rating?.toFixed(1) }}
+          <Icon name="solar:star-bold-duotone" class="text-yellow-600 leading-none text-lg -mt-1" />
         </div>
         <div class="product_price">
           ${{ product?.price?.toFixed(2) }}
@@ -106,13 +136,16 @@ const addFavorite = () => {
         </div>
         <div class="product_actions">
           <button class="flex-1 large">
+            <Icon name="hugeicons:shopping-cart-add-01" />
             {{ t('addToCart') }}
           </button>
-          <button class="flat large text-secondary-600 hover:text-red-600" @click="addFavorite">
-            <Icon name="solar:heart-linear" class="text-3xl leading-none" />
+          <button class="favorites_button flat large"
+                  :class="favoritesStore.isFavorite(+product?.id) ? 'active' : ''"
+                  @click="favoritesStore.isFavorite(+product?.id) ? removeFavorite() : addFavorite()">
+            <Icon :name="favoritesStore.isFavorite(+product?.id) ? 'solar:heart-bold' : 'solar:heart-linear'" />
           </button>
         </div>
-        <div class="flex items-center gap-2 text-sm -mt-2">
+        <div class="flex items-center gap-2 text-sm -mt-2 px-6">
           <Icon name="hugeicons:delivery-truck-02" class="text-lg leading-none" />
           {{ t('freeDelivery') }}
         </div>

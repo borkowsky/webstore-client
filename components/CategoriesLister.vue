@@ -9,9 +9,10 @@ const { data: categories } = useAsyncData('categories', () => $api('/categories?
       {{ t('categories') }}
     </div>
     <div class="categories_section_list">
-      <div
+      <NuxtLink
         v-for="category in (categories?.payload || [])"
         :key="`category-sect-${category.id}`"
+        :to="`/category/${getCanonicalUrl(category)}`"
         class="list_item"
       >
         <Icon v-if="category.icon" :name="category.icon" class="item_icon" />
@@ -23,7 +24,7 @@ const { data: categories } = useAsyncData('categories', () => $api('/categories?
             {{ category.productsCount }} {{ t('items').toLowerCase() }}
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </div>
 </template>

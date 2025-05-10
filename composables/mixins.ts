@@ -161,6 +161,22 @@ export function useMixins() {
       return navigator.clipboard.writeText(text)
     } else return Promise.reject('error')
   }
+  const paymentStatuses: String[] = ['CREATED', 'APPROVED', 'REJECTED']
+  const orderStatuses: String[] = ['CREATED', 'PAID', 'ACCEPTED', 'REJECTED', 'DELIVERY', 'DELIVERED', 'RECEIVED']
+  const paymentStatusIcons: { [key: string]: any } = {
+    CREATED: 'hugeicons:credit-card-change',
+    APPROVED: 'hugeicons:credit-card-accept',
+    REJECTED: 'hugeicons:credit-card-not-accept'
+  }
+  const orderStatusIcons: { [key: string]: any } = {
+    CREATED: 'hugeicons:shopping-basket-check-out-03',
+    PAID: 'hugeicons:credit-card-accept',
+    ACCEPTED: 'hugeicons:checkmark-circle-02',
+    REJECTED: 'hugeicons:cancel-circle',
+    DELIVERY: 'hugeicons:delivery-truck-02',
+    DELIVERED: 'hugeicons:delivery-tracking-01',
+    RECEIVED: 'hugeicons:safe-delivery-01'
+  }
 
   return {
     cdnPath,
@@ -175,6 +191,10 @@ export function useMixins() {
     isLicense,
     generatePassword,
     formatTimeAbsolute,
-    copyToClipboard
+    copyToClipboard,
+    paymentStatuses,
+    orderStatuses,
+    paymentStatusIcons,
+    orderStatusIcons
   }
 }

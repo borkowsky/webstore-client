@@ -10,7 +10,7 @@ useHead({
 })
 const {
   data: categories
-} = await useAsyncData('categories', () => $api('/categories').catch(() => []))
+} = await useAsyncData('categories', () => $api('/categories?category_id=').catch(() => []))
 
 const navItems = ref([{
   title: t('admin.title'),
@@ -165,7 +165,9 @@ const remove = () => {
     <Breadcrumbs :items="navItems"/>
     <div class="flex justify-between mt-6">
       <div class="page-heading">
-        {{ t('categories') }}
+        <h1>
+          {{ t('categories') }}
+        </h1>
       </div>
       <button class="small" @click="showAddModal=true">
         <Icon name="hugeicons:folder-add"/>

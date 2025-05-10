@@ -23,12 +23,7 @@ const user = computed(() => authStore.user)
     </div>
     <div class="flex items-center gap-2">
       <div class="header-links">
-        <NuxtLink to="/">
-          <Icon name="lucide:shopping-cart" class="text-2xl leading-none" />
-          <span>
-            {{ t('cart') }}
-          </span>
-        </NuxtLink>
+        <BasketWidget />
         <FavoritesWidget />
       </div>
       <NuxtLink to="/me" v-if="user" class="avatar">

@@ -172,7 +172,9 @@ const flushAllInputed = (): void => {
     <Breadcrumbs :items="navItems"/>
     <div class="flex justify-between mt-6">
       <div class="page-heading">
-        {{ t('brands') }}
+        <h1>
+          {{ t('brands') }}
+        </h1>
       </div>
       <button class="small" @click="showAddModal=true">
         <Icon name="hugeicons:folder-add"/>

@@ -60,7 +60,7 @@ const showRegister = () => {
         <div>
           {{ t('notHaveAccountQuestion') }}
         </div>
-        <div class="cursor-pointer transition hover:text-accent-600" @click="showRegister">
+        <div class="cursor-pointer transition hover:text-accent-600 underline decoration-accent-800 underline-offset-2" @click="showRegister">
           {{ t('createAccount') }}
         </div>
       </div>

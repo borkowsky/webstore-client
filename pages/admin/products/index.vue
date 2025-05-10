@@ -327,7 +327,9 @@ const removeTag = (idx: number): void => {
     <Breadcrumbs :items="navItems"/>
     <div class="flex justify-between mt-6">
       <div class="page-heading">
-        {{ t('products') }}
+        <h1>
+          {{ t('products') }}
+        </h1>
       </div>
       <button class="small" @click="showAddModal=true">
         <Icon name="hugeicons:plus-sign-square"/>

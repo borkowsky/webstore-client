@@ -9,25 +9,38 @@ useHead({
 const user = computed(() => authStore.user)
 
 const menuItems = computed(() => ([{
-  title: t('me.myCart'),
-  icon: 'hugeicons:shopping-cart-02',
-  to: '/me'
+  title: t('me.general'),
+  children: [{
+    title: t('me.myCart'),
+    icon: 'hugeicons:shopping-cart-02',
+    to: '/me/basket'
+  }, {
+    title: t('me.myOrders'),
+    icon: 'hugeicons:receipt-dollar',
+    to: '/me/orders'
+  }, {
+    title: t('me.myPurchases'),
+    icon: 'hugeicons:shopping-bag-check',
+    to: '/me'
+  }, {
+    title: t('favorites'),
+    icon: 'hugeicons:favourite',
+    to: '/me/favorites'
+  }]
 }, {
-  title: t('me.myOrders'),
-  icon: 'hugeicons:receipt-dollar',
-  to: '/me'
-}, {
-  title: t('me.myPurchases'),
-  icon: 'hugeicons:shopping-bag-check',
-  to: '/me'
-}, {
-  title: t('favorites'),
-  icon: 'hugeicons:favourite',
-  to: '/me'
+  title: t('me.settings'),
+  children: [{
+    title: t('me.addresses'),
+    icon: 'hugeicons:location-10',
+    to: '/me/addresses'
+  }]
 }, ...user.value?.role === 'ADMINISTRATOR' ? [{
-  title: t('admin.title'),
-  icon: 'hugeicons:dashboard-square-setting',
-  to: '/admin'
+  title: t('me.administrative'),
+  children: [{
+    title: t('admin.title'),
+    icon: 'hugeicons:dashboard-square-setting',
+    to: '/admin'
+  }]
 }] : []]))
 </script>
 
@@ -50,20 +63,31 @@ const menuItems = computed(() => ([{
       </div>
     </div>
     <div class="side_menu_list">
-      <NuxtLink
-          v-for="(link, i) in menuItems"
-          :key="`me-link-${i}`"
-          :to="link.to"
+      <div v-for="(item, idx) in menuItems"
+           :key="`menu-item-${idx}`"
+           class="parent_item"
       >
-        <Icon :name="link.icon" class="font-bold"/>
-        {{ link.title }}
-      </NuxtLink>
+        <div class="parent_title">
+          {{ item.title }}
+        </div>
+        <NuxtLink
+            v-for="(link, i) in item.children"
+            :key="`me-link-${i}`"
+            :to="link.to"
+            class="child_item"
+        >
+          <Icon :name="link.icon" class="font-bold"/>
+          {{ link.title }}
+        </NuxtLink>
+      </div>
     </div>
   </div>
   <section>
     <div class="scrolling_page_container">
-      <div class="page-heading">
-        {{ t('me.title') }}
+      <div class="page-heading sticky-heading">
+        <h1>
+          {{ t('me.title') }}
+        </h1>
       </div>
       user area
     </div>

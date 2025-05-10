@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('./transitions.css');
 @import url('./modals.css');
 @import url('./notifications.css');
@@ -9,9 +10,9 @@
 @tailwind utilities;
 
 html, body {
-    font-family: "Raleway", sans-serif;
+    font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 500;
+    font-weight: 400;
     font-style: normal;
     @apply bg-secondary-100 text-secondary-900;
 }
@@ -25,6 +26,7 @@ body {
 }
 .page_content {
     height: calc(100vh - 7.5rem);
+    scroll-behavior: smooth;
     @apply overflow-y-auto;
 }
 input, textarea {
@@ -36,8 +38,11 @@ input:not([type="search"]), textarea {
 input:disabled, textarea:disabled {
     @apply bg-secondary-200 cursor-not-allowed opacity-50;
 }
-button {
-    @apply flex items-center gap-2 bg-contrast-900 text-white rounded-lg px-6 py-2 transition hover:bg-contrast-900/90;
+button:not(.modifier) {
+    @apply select-none flex items-center gap-2 bg-contrast-900 text-white rounded-lg px-6 py-2 transition hover:bg-contrast-900/90;
+}
+button.success {
+    @apply bg-lime-600/50 hover:bg-lime-600 hover:text-secondary-100 transition text-lime-700;
 }
 button.small {
     @apply px-3 py-2 self-center text-sm;
@@ -48,8 +53,20 @@ button.large {
 button.flat {
     @apply bg-transparent hover:bg-secondary-900/10;
 }
-button:disabled {
+button:disabled:not(.modifier) {
     @apply cursor-not-allowed pointer-events-none bg-contrast-900/80;
+}
+button.modifier:disabled {
+    @apply opacity-20 cursor-not-allowed;
+}
+button.error {
+    @apply bg-red-600/80 hover:bg-red-600 transition duration-300 hover:shadow-lg shadow-red-500;
+}
+button.error > .iconify {
+    @apply text-lg leading-none;
+}
+button.error:disabled {
+    @apply bg-red-500/30 cursor-not-allowed;
 }
 section {
     @apply p-6 w-full;
@@ -84,24 +101,31 @@ section {
 }
 .side_menu {
     height: calc(100vh - 7rem);
-    @apply border-r border-secondary-100 pl-2 pr-6 w-[320px] overflow-y-auto overflow-x-hidden shrink-0;
+    @apply border-r border-secondary-100 px-2 w-[320px] overflow-y-auto overflow-x-hidden shrink-0;
 }
 .categories_section {
     height: calc(100vh - 7rem) !important;
     @apply side_menu;
 }
 .categories_section .heading, .side_menu .heading {
-    @apply py-4 sticky bg-secondary-50 top-0 px-4 font-bold text-secondary-800 text-sm;
+    @apply py-4 sticky bg-secondary-50 top-0 px-10 -mx-6 font-bold text-secondary-800 text-sm;
+}
+.heading, label {
+    @apply text-secondary-800 text-lg font-semibold mb-2 mt-4;
 }
 .scrolling_page_container {
     height: calc(100vh - 8.5rem);
-    @apply overflow-y-auto overflow-x-hidden;
+    scroll-behavior: smooth;
+    @apply overflow-y-auto overflow-x-hidden -mt-6;
 }
-.page-heading {
+.page-heading h2, .page-heading h1 {
     @apply text-4xl font-bold pb-4 underline decoration-accent-600;
 }
-.page-heading.sticky-heading {
-    @apply sticky -top-6 pt-6 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-10;
+.scrolling_page_container .page-heading.sticky-heading {
+    @apply sticky top-0 pt-4 mb-10 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-10;
+}
+section .page-heading.sticky-heading {
+    @apply sticky -top-6 -mt-6 pt-6 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-10;
 }
 .confirm_buttons {
     @apply flex justify-end gap-2;
@@ -118,8 +142,14 @@ section {
 .side_menu_list {
     @apply flex flex-col gap-1 mt-4;
 }
-.side_menu_list > * {
+.side_menu_list > *:not(.parent_item), .side_menu .child_item {
     @apply flex items-center gap-2 text-secondary-800 transition hover:text-contrast-900 hover:bg-secondary-100 px-3 py-2 rounded;
+}
+.side_menu_list > .parent_item {
+    @apply block px-4;
+}
+.side_menu .parent_title {
+    @apply font-bold text-secondary-600 leading-tight my-2 text-xs;
 }
 .breadrumbs {
     @apply flex gap-2 items-center text-xs uppercase text-secondary-500 my-2;
@@ -176,7 +206,7 @@ section {
     @apply absolute top-2 right-2 bg-red-600/80 hover:bg-red-600 text-white transition cursor-pointer rounded-lg w-10 h-10 flex items-center justify-center;
 }
 .grid_list {
-    @apply grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8;
+    @apply grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 p-0.5;
 }
 @media screen and (max-width: 511px) {
     .grid_list.popular_items .grid_item:nth-child(n+5) {
@@ -195,19 +225,31 @@ section {
 }
 .grid_list .grid_item {
     transition: all .2s cubic-bezier(.25,.8,.25, .5);
-    @apply flex flex-col overflow-hidden gap-2 rounded-lg bg-secondary-100/50 p-4 px-6 shadow h-[460px] lg:h-[440px] overflow-x-hidden hover:bg-secondary-200/50 hover:shadow-xl hover:shadow-accent-600/30 cursor-pointer;
+    @apply flex flex-col overflow-hidden gap-2 rounded-xl bg-secondary-100/50 p-4 px-6 shadow h-[460px] lg:h-[440px] overflow-x-hidden hover:bg-secondary-200/50 hover:shadow-xl hover:shadow-accent-600/30;
 }
 .grid_list .item_action {
     @apply flex items-center gap-2 flex-1;
 }
-.grid_list .grid_item:hover .item_action button {
-    @apply scale-105 shadow-lg bg-accent-900 shadow-accent-600/30;
+.grid_list .grid_item:hover .item_action button:not(.active, .success) {
+    @apply bg-accent-900 scale-105 shadow-lg shadow-accent-600/30;
 }
 .grid_list .item_action button {
-    @apply flex items-center gap-2 justify-center;
+    @apply flex items-center gap-2 justify-center truncate;
 }
 .grid_list .grid_item .item_images {
     @apply rounded-xl overflow-hidden rounded-xl overflow-hidden shadow-lg bg-[#fefefe];
+}
+.grid_item .item_action_custom {
+    @apply flex items-center gap-2 justify-center truncate mt-2;
+}
+.grid_item .item_action_custom button.error {
+    @apply bg-red-600/10 text-red-500 rounded-lg truncate hover:bg-red-600/90 hover:text-secondary-100;
+}
+.grid_item .item_action_custom button.depressed {
+    @apply flex items-center gap-2 justify-center truncate mt-2 bg-primary-500/30 text-primary-800 transition hover:bg-red-600/80 hover:text-secondary-100;
+}
+.grid_item .item_action_custom button.depressed > .iconify {
+    @apply text-xl leading-none shrink-0;
 }
 .grid_list .grid_item:hover .item_images {
     transition: all .2s cubic-bezier(.25,.8,.25, .5) !important;
@@ -229,6 +271,9 @@ section {
 }
 .grid_list .item_actions > *.error {
     @apply bg-red-600/60 md:bg-transparent hover:bg-red-600/60 text-secondary-100 md:text-inherit hover:text-secondary-100;
+}
+.grid_list .item_actions > *.success {
+    @apply bg-lime-600/50 hover:bg-lime-600/60 text-secondary-100 md:text-inherit hover:text-secondary-100;
 }
 .grid_list .grid_item:hover .item_actions {
     @apply opacity-100;
@@ -275,7 +320,7 @@ section {
 .search_pill {
     @apply rounded-full bg-secondary-200 hover:bg-accent-300/80 transition pr-3 pl-1 cursor-pointer flex items-center gap-2 py-1;
 }
-.search_pill .icon {
+.search_pill .icon, .search_pill .close {
     @apply rounded-full w-6 h-6 flex items-center justify-center overflow-hidden;
 }
 .search_pill .icon img {
@@ -283,6 +328,21 @@ section {
 }
 .search_pill .name {
     @apply text-xs;
+}
+.search_pill.large {
+    @apply px-2 py-1.5;
+}
+.search_pill.large .name {
+    @apply text-base;
+}
+.search_pill.large .icon, .search_pill.large .close {
+    @apply w-8 h-8;
+}
+.search_pill.large .icon {
+    @apply bg-secondary-800/80 text-secondary-100;
+}
+.search_pill .close {
+    @apply bg-red-600/10 text-red-500 transition hover:bg-red-600/90 hover:text-secondary-100;
 }
 .pill {
     @apply flex items-center gap-2 rounded-full bg-secondary-200 py-1 px-1;
@@ -314,14 +374,14 @@ section {
 .tabs .tab.active {
     @apply text-secondary-900 pointer-events-none cursor-default;
 }
-.favorites_widget {
+.favorites_widget, .basket_widget {
     @apply relative;
 }
-.favorites_widget.active {
+.favorites_widget.active, .basket_widget.active {
     @apply bg-accent-100/50 pointer-events-none cursor-default;
 }
 .badge {
-    @apply absolute -top-1 -right-1 z-50 text-xs bg-accent-400 pt-0.5 pb-1 px-2 py-0.5 rounded-full;
+    @apply absolute -top-1 -right-1 z-50 text-xs bg-accent-400 px-2 py-0.5 rounded-full;
 }
 .empty_placeholder {
     @apply flex flex-col items-center flex-1 py-24 gap-8 w-full justify-center;
@@ -331,4 +391,253 @@ section {
 }
 .empty_placeholder .content {
     @apply text-lg text-secondary-600;
+}
+.favorites_button {
+    @apply flex items-center pl-2 transition duration-300;
+}
+.favorites_button:not(.large) .favorites_button:not(.active) {
+    @apply hover:scale-[1.5];
+}
+.favorites_button.large {
+    @apply text-secondary-700 hover:text-red-600 transition duration-300 leading-none text-3xl;
+}
+.favorites_button.large.active {
+    @apply text-red-600 pointer-events-auto bg-red-300/10;
+}
+.favorites_button.active {
+    text-shadow: #c77b18 0 0 10px 10px;
+}
+.basket_button {
+    @apply flex items-center gap-2;
+}
+.basket_button.active {
+    transform: none !important;
+    @apply bg-accent-800/10 text-accent-900 pointer-events-none cursor-default;
+}
+.basket_button .iconify {
+    @apply text-2xl;
+}
+.cancel-button {
+    @apply flex items-center justify-center self-stretch cursor-pointer rounded-lg px-3 text-lg leading-none font-bold transition hover:bg-red-500/10;
+}
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    input[type=checkbox] {
+        --active: #c77b18;
+        --active-inner: #fff;
+        --focus: 2px rgba(39, 94, 254, .3);
+        --border: #f3e294;
+        --border-hover: #c77b18;
+        --background: #fff;
+        --disabled: #F6F8FF;
+        --disabled-inner: #E1E6F9;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        height: 21px;
+        width: 21px;
+        outline: none;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+        border: 1px solid var(--bc, var(--border));
+        background: var(--b, var(--background));
+        transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+        @apply p-0 m-0;
+    }
+    input[type=checkbox]:after {
+        content: "";
+        display: block;
+        left: 0;
+        top: 0;
+        position: absolute;
+        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+    }
+    input[type=checkbox]:checked {
+        --b: var(--active);
+        --bc: var(--active);
+        --d-o: .3s;
+        --d-t: .6s;
+        --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+        box-shadow: var(--active) 0 0 20px -2px;
+    }
+    input[type=checkbox]:disabled {
+        --b: var(--disabled);
+        cursor: not-allowed;
+        opacity: 0.9;
+    }
+    input[type=checkbox]:disabled:checked {
+        --b: var(--disabled-inner);
+        --bc: var(--border);
+    }
+    input[type=checkbox]:disabled + label {
+        cursor: not-allowed;
+    }
+    input[type=checkbox]:hover:not(:checked):not(:disabled) {
+        --bc: var(--border-hover);
+    }
+    input[type=checkbox]:focus {
+        box-shadow: 0 0 0 var(--focus);
+    }
+    input[type=checkbox]:not(.switch) {
+        width: 21px;
+    }
+    input[type=checkbox]:not(.switch):after {
+        opacity: var(--o, 0);
+    }
+    input[type=checkbox]:not(.switch):checked {
+        --o: 1;
+    }
+    input[type=checkbox] + label {
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+
+    input[type=checkbox]:not(.switch) {
+        border-radius: 7px;
+    }
+    input[type=checkbox]:not(.switch):after {
+        width: 5px;
+        height: 9px;
+        border: 2px solid var(--active-inner);
+        border-top: 0;
+        border-left: 0;
+        left: 7px;
+        top: 4px;
+        transform: rotate(var(--r, 20deg));
+    }
+    input[type=checkbox]:not(.switch):checked {
+        --r: 43deg;
+    }
+}
+.basket_list {
+    @apply flex flex-col divide-y divide-secondary-100;
+}
+.basket_list .list_item {
+    @apply flex items-center gap-4 p-3 hover:bg-secondary-200/20 rounded-lg;
+}
+.basket_list .list_item .item_selector {
+    @apply flex items-center justify-center w-6 h-6;
+}
+.basket_list .list_item .item_image {
+    @apply w-12 h-12 flex items-center justify-center shrink-0;
+}
+.basket_list .list_item .item_content {
+    @apply flex flex-col gap-2 flex-1;
+}
+.basket_list .list_item .item_content .name {}
+.basket_list .list_item .item_content .description {
+    @apply font-bold;
+}
+.basket_list .list_item .item_actions input::-webkit-outer-spin-button,
+.basket_list .list_item .item_actions input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.basket_list .list_item .item_actions {
+    @apply flex items-center gap-4;
+}
+.basket_list .list_item .item_actions .modifier {
+    @apply flex items-center justify-center text-xl leading-none;
+}
+.basket_list .list_item .item_actions input[type=number] {
+    -moz-appearance: textfield;
+}
+.basket_list .list_item .item_actions input[type="number"] {
+    @apply w-[5rem] text-center;
+}
+.ordering_list {
+    @apply flex flex-col divide-y divide-secondary-100;
+}
+.ordering_list .list_item {
+    @apply px-3 py-2 flex items-center gap-2 transition hover:bg-secondary-200/20;
+}
+.ordering_list .list_item .image {
+    @apply w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center shrink-0;
+}
+.ordering_list .list_item .image img {
+    @apply w-full h-full object-contain;
+}
+.ordering_list .list_item .content {
+    @apply flex-1;
+}
+.ordering_list .list_item .content .name {
+    @apply truncate max-w-[200px] text-sm font-bold;
+}
+.table_list {
+    @apply divide-y divide-secondary-200 divide-dashed;
+}
+.table_list .list_item {
+    @apply flex items-center justify-between py-2;
+}
+.table_list .list_item > div:first-child {
+    @apply font-bold text-secondary-800;
+}
+.table_list .list_item > div:last-child {
+    @apply font-bold;
+}
+.order_button {
+    @apply my-4 hover:shadow-xl flex items-center justify-center w-full gap-2 py-3 transition hover:bg-accent-700 bg-accent-600 rounded-lg text-secondary-100;
+}
+button.order_button:disabled {
+    @apply bg-secondary-800/10 cursor-not-allowed text-primary-500;
+}
+.heading-tabs {
+    @apply flex items-center;
+}
+.heading-tabs .tab_item {
+    @apply flex items-center rounded-lg text-primary-500 hover:text-accent-700 justify-center text-2xl transition px-8 py-2 hover:bg-secondary-200/20 cursor-pointer font-bold;
+}
+.heading-tabs .tab_item.active {
+    @apply text-accent-800 pointer-events-none cursor-default;
+}
+.heading-tabs .tab_item .counter {
+    @apply text-base font-normal ml-2;
+}
+.orders_list {
+    @apply flex flex-col gap-4;
+}
+.orders_list .list_item {
+    @apply shadow-lg rounded-xl overflow-hidden;
+}
+.orders_list .list_item .item_heading {
+    @apply flex items-center w-full bg-accent-100/50 border-b border-dashed border-accent-200/50 justify-between py-6 px-10;
+}
+.orders_list .list_item .item_content {
+    @apply flex items-center justify-between py-6 px-10 bg-secondary-100/20;
+}
+.orders_list .list_item .item_content .products_list {
+    @apply flex items-center;
+}
+.orders_list .list_item .item_content .image {
+    @apply w-24 h-24 shrink-0 rounded-lg overflow-hidden flex items-center justify-center;
+}
+.orders_list .list_item .item_content .image img {
+    @apply w-full h-full object-contain;
+}
+.payment_card:not(.collapsed) {
+    @apply px-4 pt-4 rounded-2xl flex flex-col justify-between text-secondary-100 shadow-lg shadow-red-500/20 bg-gradient-to-r from-red-500/50 to-fuchsia-500/50 h-44;
+}
+.payment_card > div {
+    @apply flex items-center justify-between w-full;
+}
+.payment_card.collapsed {
+    @apply px-4 pt-4 bg-primary-200/50 text-primary-800 rounded-2xl;
+}
+.pagination {
+    @apply flex items-center gap-2 w-full justify-center;
+}
+.pagination_item {
+    @apply cursor-pointer transition hover:bg-secondary-200/50 w-10 rounded-lg h-10 flex items-center justify-center shrink-0 bg-secondary-50 border border-secondary-100 ;
+}
+.pagination_item.active {
+    @apply pointer-events-none cursor-not-allowed bg-accent-500/60;
+}
+.pagination .pagination_arrow {
+    @apply h-10 border-secondary-100 border flex items-center justify-center shrink-0 rounded-lg px-4 gap-2 cursor-pointer;
+}
+.pagination_item.disabled, .pagination_arrow.disabled {
+    @apply bg-secondary-200/20 cursor-not-allowed pointer-events-none;
 }

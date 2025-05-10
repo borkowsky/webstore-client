@@ -20,6 +20,16 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {},
   actions: {
+    async fetch (): Promise<any> {
+      await $api("/me").then((r: any) => {
+        this.setUser(r?.payload || null)
+        this.setLoggedIn(!!r?.payload?.id)
+        this.setAccessToken(r?.accessToken || null)
+        // console.log('reAuthenticate ok', r)
+      }).catch((e: Error) => {
+        // console.log('reAuthenticate error', e)
+      })
+    },
     async reAuthenticate(): Promise<boolean> {
       return new Promise((resolve, reject) => {
         const token: string | null = this.getAuthToken()

@@ -2,15 +2,14 @@
     @apply bg-secondary-900/20 cursor-pointer fixed inset-0 flex items-end md:items-center md:justify-center z-[200] backdrop-blur-sm;
 }
 .modal-container-wrapper {
-    max-height: 100vh;
-    @apply cursor-pointer fixed py-10 inset-0 flex items-end md:items-center max-w-[100vw] md:pb-4 md:justify-center z-[201] overflow-y-auto;
+    @apply cursor-pointer fixed inset-0 flex items-end md:items-center max-w-[100vw] md:pb-4 md:justify-center z-[201] overflow-y-auto;
 }
 .modal-container-wrapper.fullscreen {
 
 }
 .modal-container {
+    max-height: 90vh !important;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.01);
-    max-height: 95vh;
     @apply bg-secondary-100 p-[30px] overflow-auto md:max-h-none rounded-xl md:max-w-[560px] w-full cursor-auto;
 }
 .modal-container.simple {

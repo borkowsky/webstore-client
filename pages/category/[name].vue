@@ -17,7 +17,9 @@ useHead({
 <template>
   <section>
     <div class="page-heading">
-      {{ category?.name }}
+      <h1>
+        {{ category?.name }}
+      </h1>
     </div>
   </section>
 </template>
