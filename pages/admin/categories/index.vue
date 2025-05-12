@@ -163,7 +163,7 @@ const remove = () => {
 <template>
   <section>
     <Breadcrumbs :items="navItems"/>
-    <div class="flex justify-between mt-6">
+    <div class="flex justify-between">
       <div class="page-heading">
         <h1>
           {{ t('categories') }}

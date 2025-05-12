@@ -20,7 +20,8 @@ watch(() => user.value, (): void => {
             class="basket_widget"
             :class="route.fullPath === '/me/basket' ? 'active' : ''">
     <div v-if="store.total" class="badge">{{ store.total }}</div>
-    <Icon name="solar:cart-4-line-duotone" class="text-2xl leading-none"/>
+    <Icon :name="route.fullPath === '/me/basket' ? 'solar:cart-4-bold-duotone' : 'solar:cart-4-line-duotone'"
+          class="text-2xl leading-none"/>
     <span>
       {{ t('cart') }}
     </span>

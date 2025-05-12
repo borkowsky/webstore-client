@@ -87,7 +87,7 @@ const addBasket = (): void => {
               @click.stop="addMode=true"
       >
         <Icon :name="basketStore.isBasket(+item.id) ? 'solar:cart-check-bold-duotone' : 'solar:cart-plus-line-duotone'"
-              class="text-lg leading-none"/>
+              class=" shrink-0"/>
         {{ t(basketStore.isBasket(+item.id) ? 'inCart' : 'addToCart') }}
       </button>
       <div v-else class="flex items-center gap-2 flex-1">

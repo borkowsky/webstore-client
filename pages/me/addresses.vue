@@ -198,7 +198,7 @@ const flushInputed = (): void => {
       <template #title>
         {{ t('addresses.add') }}
       </template>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col">
         <label for="address_input">
           {{ t('addresses.address') }}
         </label>
@@ -259,7 +259,7 @@ const flushInputed = (): void => {
       <template #title>
         {{ t('addresses.edit') }}
       </template>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col">
         <label for="address_input">
           {{ t('addresses.address') }}
         </label>

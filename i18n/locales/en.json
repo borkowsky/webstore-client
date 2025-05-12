@@ -104,9 +104,22 @@
   "next": "Next",
   "prev": "Prev",
   "manage": "Manage",
+  "productsNotFound": "No products found",
+  "of": "Of",
+  "about": "About",
   "reviews": {
     "title": "Reviews",
-    "leaveReview": "Leave a review"
+    "leaveReview": "Leave a review",
+    "selectProduct": "Select item",
+    "textLabel": "How do you like the product?",
+    "textPlaceholder": "Share your impressions about the product",
+    "imagesLabel": "Add images",
+    "imageUploadError": "Failed to upload image, try again",
+    "addOk": "Review posted",
+    "addError": "Failed to post review",
+    "empty": "The list of comments is empty",
+    "star": "Star",
+    "stars": "Stars"
   },
   "me": {
     "title": "User area",

@@ -33,7 +33,7 @@ input, textarea {
     @apply placeholder-secondary-900/40 outline-none transition;
 }
 input:not([type="search"]), textarea {
-    @apply py-2 px-4 rounded-lg;
+    @apply py-2 px-4 rounded-lg resize-none;
 }
 input:disabled, textarea:disabled {
     @apply bg-secondary-200 cursor-not-allowed opacity-50;
@@ -152,7 +152,7 @@ section .page-heading.sticky-heading {
     @apply font-bold text-secondary-600 leading-tight my-2 text-xs;
 }
 .breadrumbs {
-    @apply flex gap-2 items-center text-xs uppercase text-secondary-500 my-2;
+    @apply flex gap-2 items-center text-xs uppercase text-secondary-500 my-2 h-12;
 }
 .breadrumbs > a {
     @apply hover:text-accent-600 transition flex items-center gap-1;
@@ -194,7 +194,7 @@ section .page-heading.sticky-heading {
     @apply relative overflow-hidden flex items-center justify-center rounded-lg shadow bg-secondary-50 cursor-pointer;
 }
 .image_placeholder .overlay {
-    @apply absolute inset-0 text-white flex items-center justify-center transition pointer-events-none bg-secondary-800/40 backdrop-blur-sm;
+    @apply z-[200] absolute inset-0 text-white flex items-center justify-center transition pointer-events-none bg-secondary-800/40 backdrop-blur-sm;
 }
 .image_placeholder img {
     @apply w-full h-full object-contain;
@@ -306,6 +306,9 @@ section .page-heading.sticky-heading {
 .categories_section_list .list_item {
     @apply flex items-center gap-4 rounded-lg transition hover:bg-secondary-200/50 cursor-pointer px-4 py-2;
 }
+.categories_section_list .list_item.active {
+    @apply bg-accent-100/60 pointer-events-none cursor-default;
+}
 .categories_section_list .item_icon {
     @apply text-2xl leading-none;
 }
@@ -364,15 +367,6 @@ section .page-heading.sticky-heading {
 }
 .pill .icon img {
     @apply w-full h-full object-contain;
-}
-.tabs {
-    @apply flex items-center gap-6;
-}
-.tabs .tab {
-    @apply text-2xl text-secondary-500 hover:text-secondary-900 cursor-pointer transition font-semibold;
-}
-.tabs .tab.active {
-    @apply text-secondary-900 pointer-events-none cursor-default;
 }
 .favorites_widget, .basket_widget {
     @apply relative;
@@ -640,4 +634,19 @@ button.order_button:disabled {
 }
 .pagination_item.disabled, .pagination_arrow.disabled {
     @apply bg-secondary-200/20 cursor-not-allowed pointer-events-none;
+}
+.brands_list {
+    @apply flex items-center gap-2 flex-nowrap overflow-x-auto py-4;
+}
+.brands_list .list_item {
+    @apply flex items-center gap-2 cursor-pointer bg-secondary-100 py-2 pl-2 rounded-full shadow pr-4 transition hover:bg-secondary-300/20;
+}
+.brands_list .list_item .item_image {
+    @apply w-8 h-8 rounded-full flex items-center justify-center overflow-hidden;
+}
+.brands_list .list_item .item_image img {
+    @apply w-full h-full object-contain;
+}
+.brands_list .list_item .item_content {
+
 }

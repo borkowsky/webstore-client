@@ -13,8 +13,10 @@ useHead({
   title: t('cart')
 })
 basketStore.fetch()
+const { data: addressesData } = await useAsyncData("addresses", () => $api("/me/addresses").catch(() => null))
 const basket = computed(() => basketStore.list)
 const user = computed(() => authStore.user)
+const addresses = computed(() => addressesData.value?.payload || [])
 
 const selectedItems: Ref<number[], number[]> = ref([])
 const showRemoveModal: Ref<boolean> = ref(false)
@@ -131,7 +133,7 @@ const createOrder = (): void => {
         <div class="heading" style="margin-left: -2.5rem;margin-right: -2.5rem;">
           {{ t('orders.selectAddress') }}
         </div>
-        <div v-for="address in user.addresses"
+        <div v-for="address in addresses"
              :key="`user-address-${address.id}`"
              class="flex items-center gap-2 transition cursor-pointer rounded-xl px-3 py-2"
              :class="selectedAddress===address.id ? 'bg-secondary-100' : ''"
@@ -159,7 +161,7 @@ const createOrder = (): void => {
       <Icon name="hugeicons:credit-card" class="text-xl"/>
       {{ t('placeAnOrder') }}
     </button>
-    <template v-if="!user?.addresses?.length">
+    <template v-if="!addresses?.length">
       <div class="bg-red-700/10 rounded-xl p-4">
         <div class="font-bold text-sm flex items-center gap-2">
           <Icon name="hugeicons:information-circle" class="-mt-1 text-lg"/>

@@ -170,10 +170,12 @@ const remove = () => {
 
 <template>
   <section>
-    <Breadcrumbs :items="navItems"/>
+    <Breadcrumbs :items="navItems" class="h-12" />
     <div class="flex justify-between">
       <div class="page-heading">
-        {{ category?.name }}
+        <h1>
+          {{ category?.name }}
+        </h1>
       </div>
       <button class="small" @click="showAddModal=true">
         <Icon name="hugeicons:folder-add"/>
