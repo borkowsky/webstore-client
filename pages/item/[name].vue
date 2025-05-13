@@ -29,7 +29,7 @@ const {data: reviewImagesData} = await useAsyncData('review-images', () => $api(
     .catch(() => null))
 const {data: ratingsData} = await useAsyncData('ratings', () => $api(`/reviews/last-ratings?product_id=${productId?.value}`)
     .catch(() => null))
-if (!productData?.value) {
+if (!productData?.value || getCanonicalUrl(productData.value?.payload) !== route.params.name) {
   await navigateTo("/")
 }
 const product = computed(() => productData?.value?.payload)
@@ -168,14 +168,16 @@ const toPage = (p) => {
         </div>
       </div>
       <div class="product_details_container">
-        <div class="product_brand">
+        <NuxtLink v-if="product?.brand"
+                  :to="`/brand/${getCanonicalUrl(product.brand)}`"
+                  class="product_brand">
           <div class="image">
             <img :src="product?.brand?.image" :alt="product?.brand?.name">
           </div>
           <div class="name">
             {{ product?.brand?.name }}
           </div>
-        </div>
+        </NuxtLink>
         <div class="product_name">
           {{ product?.name }}
         </div>

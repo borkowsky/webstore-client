@@ -2,8 +2,6 @@
 const store = useAppStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
-const searchString: Ref<string> = ref('')
-
 const user = computed(() => authStore.user)
 </script>
 
@@ -13,13 +11,7 @@ const user = computed(() => authStore.user)
       <img src="/images/logo.png" class="h-8" alt="">
     </NuxtLink>
     <div class="flex-1 flex gap-2 items-center">
-      <div class="app_header_search">
-        <Icon name="lucide:search" />
-        <input type="search" v-model="searchString" :placeholder="t('search')">
-        <button :class="searchString.length ? 'opacity-100' : 'opacity-0'">
-          {{ t('search').toLowerCase() }}
-        </button>
-      </div>
+      <SearchComponent />
     </div>
     <div class="flex items-center gap-2">
       <div class="header-links">

@@ -18,7 +18,7 @@ const category = computed(() => categoryData?.value?.payload || null)
 const products = computed(() => productsData?.value?.payload || [])
 const brands = computed(() => brandsData?.value?.payload || [])
 const pagesTotal = computed(() => productsData.value?.pages as number)
-if (!category.value) {
+if (!category.value || getCanonicalUrl(category.value) !== route.params.name as string) {
   await navigateTo("/")
 }
 store.setTitle(category.value?.name)

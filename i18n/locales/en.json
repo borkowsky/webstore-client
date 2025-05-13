@@ -15,6 +15,13 @@
   "createAccount": "Create account",
   "createAccountError": "Failed to create account",
   "search": "Search",
+  "searchResults": "Search result",
+  "searchResultsFor": "Search results for",
+  "emptySearchResults": "Search results is empty",
+  "searchPlaceholder": "Enter text to search",
+  "resultFound": "Result found",
+  "resultsFound": "Results found",
+  "found": "Found",
   "username": "Username",
   "password": "Password",
   "input_text": "Input text",
@@ -107,6 +114,8 @@
   "productsNotFound": "No products found",
   "of": "Of",
   "about": "About",
+  "notAvailable": "Not available",
+  "outOfStock": "Out of stock",
   "reviews": {
     "title": "Reviews",
     "leaveReview": "Leave a review",
@@ -123,13 +132,16 @@
   },
   "me": {
     "title": "User area",
-    "myPurchases": "My purchases",
+    "myPayments": "My payments",
     "myOrders": "My orders",
     "myCart": "My basket",
     "settings": "Settings",
     "general": "General",
     "administrative": "Administrative",
-    "addresses": "Addresses"
+    "addresses": "Addresses",
+    "payments": {
+      "title": "Payments"
+    }
   },
   "addresses": {
     "title": "Shipping addresses",

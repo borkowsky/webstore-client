@@ -31,8 +31,10 @@ export function $api<T>(
       Authorization: (auth.accessToken || authToken.value) ? `Bearer ${auth.accessToken || authToken.value}` : '',
       ...opts?.headers
     }
-  }).catch((e: Error) => {
-    console.error('FETCH Error: ', e)
+  }).catch((e: any) => {
+    if (import.meta.env.NODE_ENV !== 'production') {
+      console.error('FETCH Error: ', e.data)
+    }
     return Promise.reject(e)
   })
 }

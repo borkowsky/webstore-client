@@ -3,13 +3,13 @@ import countries from '../../assets/json/countries.json'
 
 const store = useAppStore()
 const {t} = useI18n()
-const authStore = useAuthStore()
 const {notify} = useNotification()
 store.setTitle(t('addresses.title'))
 useHead({
   title: t('addresses.title')
 })
-const user = computed(() => authStore.user)
+const { data: addressesData } = await useAsyncData("addresses", () => $api("/me/addresses").catch(() => null))
+const addresses = computed(() => addressesData.value?.payload)
 const breadcrumbItems = computed(() => ([{
   title: t('me.title'),
   path: '/me',
@@ -33,10 +33,6 @@ const canProcess = computed(() => inputed.address.length > 0 &&
     inputed.country.length > 0 &&
     inputed.city.length > 0 &&
     inputed.region.length > 0)
-
-onBeforeMount(() => {
-  authStore.fetch()
-})
 
 const doEdit = (item: any): void => {
   if (!item) return
@@ -74,16 +70,16 @@ const add = (): void => {
     notify({
       type: 'success',
       title: t('information'),
-      inputed: t('addresses.addOk')
+      text: t('addresses.addOk')
     })
   }).catch(() => {
     notify({
       type: 'error',
       title: t('error'),
-      inputed: t('addresses.addError')
+      text: t('addresses.addError')
     })
   }).finally(() => {
-    authStore.fetch()
+    refreshNuxtData("addresses")
   })
 }
 const edit = (): void => {
@@ -112,7 +108,7 @@ const edit = (): void => {
       text: t('addresses.updateError')
     })
   }).finally(() => {
-    authStore.fetch()
+    refreshNuxtData("addresses")
   })
 }
 const remove = (): void => {
@@ -133,7 +129,7 @@ const remove = (): void => {
       text: t('addresses.deleteError')
     })
   }).finally(() => {
-    authStore.fetch()
+    refreshNuxtData("addresses")
   })
 }
 const flushInputed = (): void => {
@@ -160,8 +156,8 @@ const flushInputed = (): void => {
       </div>
     </div>
     <div>
-      <div v-if="user?.addresses?.length" class="list">
-        <div v-for="item in user.addresses"
+      <div v-if="addresses?.length" class="list">
+        <div v-for="item in addresses"
              :key="`address-${item.id}`"
              class="list_item"
         >

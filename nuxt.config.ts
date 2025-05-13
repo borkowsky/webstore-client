@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     head: {
       link: [{
         rel: 'stylesheet',
-        href: 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
+        href: 'https://unpkg.com/boxicons@latest/css/boxicons.min.css'
       }, {
         rel: 'stylesheet',
         href: 'https://cdn.hugeicons.com/font/hgi-stroke-rounded.css'

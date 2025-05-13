@@ -73,11 +73,18 @@ watch(() => currentSubcategory.value, () => {
 watch(brandSearchString, throttle(() => {
   searchBrand()
 }, 500))
-
+const page: Ref<number> = ref(0)
+const productsQueryParams = computed(() => new URLSearchParams({
+  "page": page.value.toString(),
+  "sort": "id",
+  "order": "desc",
+  "category_id": (currentSubcategory?.value?.id || currentCategory.value?.id || "").toString(),
+  "available": ""
+}).toString())
 const fetchProducts = (): void => {
-  $api(`/products?category_id=${currentSubcategory?.value?.id || currentCategory.value?.id || null}`).then((res) => {
+  $api(`/products?${productsQueryParams.value}`).then((res) => {
     products.value = res.payload || []
-  }).catch((err: Error) => {
+  }).catch(() => {
     notify({
       type: 'error',
       title: t('error'),
@@ -85,6 +92,11 @@ const fetchProducts = (): void => {
     })
   })
 }
+
+watch(productsQueryParams, () => {
+  fetchProducts()
+})
+
 const doEdit = (item: any): void | boolean => {
   if (!item) return false
   inputed.name = item.name
@@ -331,14 +343,10 @@ const removeTag = (idx: number): void => {
           {{ t('products') }}
         </h1>
       </div>
-      <button class="small" @click="showAddModal=true">
+      <button v-if="currentCategory || currentSubcategory" class="small" @click="showAddModal=true">
         <Icon name="hugeicons:plus-sign-square"/>
         {{ t('create') }}
       </button>
-<!--      <button v-if="currentCategory || currentSubcategory" class="small" @click="showAddModal=true">-->
-<!--        <Icon name="hugeicons:plus-sign-square"/>-->
-<!--        {{ t('create') }}-->
-<!--      </button>-->
     </div>
     <div class="flex w-full md:items-center bg-accent-100 pl-6 pr-2 py-2 gap-4 flex-col md:flex-row rounded-lg rounded-b-none">
       <div class="flex-1 flex items-center">
@@ -394,7 +402,7 @@ const removeTag = (idx: number): void => {
             </div>
             <div class="list_content">
               <div class="text-sm">
-                {{ item.name }}
+                {{ item.name }} <span v-if="!item.balance" class="font-bold text-red-500 ml-2">{{ t('outOfStock') }}</span>
               </div>
               <div class="line-clamp-2">
                 {{ `${t('description')}: ${item.description || t('empty').toLowerCase()}` }},

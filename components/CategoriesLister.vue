@@ -7,6 +7,7 @@ const route = useRoute()
 const selected: Ref<any> = ref(null)
 const searchParams = computed(() => new URLSearchParams({
   "category_id": selected.value?.id || '',
+  "enabled": "true",
   "limit": "500"
 }).toString())
 const {data: categories} = useAsyncData('categories', () => $api(`/categories?${searchParams.value}`).catch(() => []))

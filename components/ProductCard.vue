@@ -59,7 +59,7 @@ const addBasket = (): void => {
 </script>
 
 <template>
-  <div class="grid_item">
+  <div class="grid_item" :class="!item.available ? 'disabled' : ''">
     <NuxtLink :to="`/item/${getCanonicalUrl(item)}`" class="flex flex-col gap-4">
       <div class="item_images">
         <img :src="item.images[0]" alt="">
@@ -68,13 +68,18 @@ const addBasket = (): void => {
         <div class="item_name">
           {{ item.name }}
         </div>
-        <div v-if="$slots?.price" class="price">
-          <slot name="price" />
-        </div>
+        <template v-if="item.available">
+          <div v-if="$slots?.price" class="price">
+            <slot name="price" />
+          </div>
+          <div v-else class="price">
+            ${{ (item.discountPrice && (item.discountPrice < item.price) ? item.discountPrice : item.price).toFixed(2) }}
+            <sup v-if="item.discountPrice && (item.discountPrice < item.price)"
+                 class="line-through text-xs opacity-80">${{ item.price.toFixed(2) }}</sup>
+          </div>
+        </template>
         <div v-else class="price">
-          ${{ (item.discountPrice && (item.discountPrice < item.price) ? item.discountPrice : item.price).toFixed(2) }}
-          <sup v-if="item.discountPrice && (item.discountPrice < item.price)"
-               class="line-through text-xs opacity-80">${{ item.price.toFixed(2) }}</sup>
+          {{ t('notAvailable') }}
         </div>
       </div>
     </NuxtLink>

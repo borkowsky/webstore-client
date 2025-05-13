@@ -69,6 +69,7 @@ const breadcrumbItems = computed(() => ([{
 
 const doReviewProbes = (): void => {
   if (!order.value) return
+  allowedReviewProducts.value = []
   order.value.products.forEach((product: any) => {
     $api("/reviews/probe", {
       method: "post",

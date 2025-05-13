@@ -29,6 +29,12 @@ body {
     scroll-behavior: smooth;
     @apply overflow-y-auto;
 }
+.page_sectioned_container {
+    height: inherit;
+    scroll-behavior: smooth;
+    overflow: inherit;
+    @apply flex;
+}
 input, textarea {
     @apply placeholder-secondary-900/40 outline-none transition;
 }
@@ -122,10 +128,10 @@ section {
     @apply text-4xl font-bold pb-4 underline decoration-accent-600;
 }
 .scrolling_page_container .page-heading.sticky-heading {
-    @apply sticky top-0 pt-4 mb-10 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-10;
+    @apply sticky top-0 pt-4 mb-10 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-[5];
 }
 section .page-heading.sticky-heading {
-    @apply sticky -top-6 -mt-6 pt-6 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-10;
+    @apply sticky -top-6 -mt-6 pt-6 -mx-6 px-6 bg-secondary-50/90 backdrop-blur z-[5];
 }
 .confirm_buttons {
     @apply flex justify-end gap-2;
@@ -145,8 +151,14 @@ section .page-heading.sticky-heading {
 .side_menu_list > *:not(.parent_item), .side_menu .child_item {
     @apply flex items-center gap-2 text-secondary-800 transition hover:text-contrast-900 hover:bg-secondary-100 px-3 py-2 rounded;
 }
+.side_menu_list .iconify {
+    @apply text-lg;
+}
 .side_menu_list > .parent_item {
     @apply block px-4;
+}
+.side_menu_list .active {
+    @apply bg-accent-100 pointer-events-none cursor-default;
 }
 .side_menu .parent_title {
     @apply font-bold text-secondary-600 leading-tight my-2 text-xs;
@@ -168,6 +180,9 @@ section .page-heading.sticky-heading {
 }
 .list_item .list_icon {
     @apply flex items-center w-12 h-12 text-secondary-100 justify-center text-xl shrink-0 leading-none bg-secondary-800 rounded-full;
+}
+.list_item .list_icon.light {
+    @apply bg-secondary-200 text-secondary-900 text-2xl leading-none;
 }
 .list_item .list_icon.small {
     @apply w-10 h-10;
@@ -208,6 +223,9 @@ section .page-heading.sticky-heading {
 .grid_list {
     @apply grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 p-0.5;
 }
+.grid_list.wide {
+    @apply grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-8 p-0.5;
+}
 @media screen and (max-width: 511px) {
     .grid_list.popular_items .grid_item:nth-child(n+5) {
         @apply hidden;
@@ -226,6 +244,12 @@ section .page-heading.sticky-heading {
 .grid_list .grid_item {
     transition: all .2s cubic-bezier(.25,.8,.25, .5);
     @apply flex flex-col overflow-hidden gap-2 rounded-xl bg-secondary-100/50 p-4 px-6 shadow h-[460px] lg:h-[440px] overflow-x-hidden hover:bg-secondary-200/50 hover:shadow-xl hover:shadow-accent-600/30;
+}
+.grid_list .grid_item.disabled {
+    @apply grayscale pointer-events-none cursor-not-allowed;
+}
+.grid_list .grid_item.disabled .item_images {
+    @apply opacity-50;
 }
 .grid_list .item_action {
     @apply flex items-center gap-2 flex-1;
@@ -512,6 +536,9 @@ section .page-heading.sticky-heading {
 .basket_list .list_item {
     @apply flex items-center gap-4 p-3 hover:bg-secondary-200/20 rounded-lg;
 }
+.basket_list .list_item.disabled {
+    @apply pointer-events-none cursor-not-allowed opacity-80 grayscale;
+}
 .basket_list .list_item .item_selector {
     @apply flex items-center justify-center w-6 h-6;
 }
@@ -649,4 +676,19 @@ button.order_button:disabled {
 }
 .brands_list .list_item .item_content {
 
+}
+.search_results_details {
+    @apply text-lg opacity-50 font-bold;
+}
+.search_grid {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-4;
+}
+.search_grid .grid_item {
+    @apply flex items-center gap-2 cursor-pointer transition hover:bg-secondary-100 px-3 py-2 rounded-xl;
+}
+.search_grid .grid_item .image {
+    @apply w-10 h-10 flex items-center justify-center overflow-hidden;
+}
+.search_grid .grid_item .image img {
+    @apply w-full h-full object-contain;
 }

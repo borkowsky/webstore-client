@@ -8,9 +8,14 @@ store.setTitle(t('admin.manageBrands'))
 useHead({
   title: t('admin.manageBrands')
 })
+const searchParams = new URLSearchParams({
+  "limit": "500",
+  "sort": "id",
+  "order": "desc"
+})
 const {
   data: brands
-} = await useAsyncData('brands', () => $api('/brands').catch((e: Error) => {
+} = await useAsyncData('brands', () => $api(`/brands?${searchParams.toString()}`).catch((e: Error) => {
   console.log(e)
   return null
 }))
@@ -20,7 +25,7 @@ const navItems = ref([{
   path: '/admin'
 }, {
   title: t('admin.manageBrands'),
-  path: '/admin/brands'
+  path: '/admin/brand'
 }])
 const selected: Ref<any> = ref(null)
 const showAddModal = ref(false)
@@ -60,6 +65,7 @@ const add = () => {
       image
     })
   }).then(() => {
+    showAddModal.value = false
     flushInputed()
     nextTick(() => {
       showAddModal.value = false
@@ -71,7 +77,6 @@ const add = () => {
     })
     refreshData()
   }).catch(() => {
-    showAddModal.value = false
     notify({
       type: 'error',
       title: t('error'),
@@ -188,11 +193,11 @@ const flushAllInputed = (): void => {
             :key="`adm-brand-${item.id}`"
         >
           <div class="list_item">
-            <div class="list_icon overflow-hidden small">
-              <img :src="item.image" alt="" class="w-full h-full object-cover">
+            <div class="list_icon overflow-hidden small light">
+              <img :src="item.image" alt="" class="w-full h-full object-contain">
             </div>
             <div class="list_content">
-              <div class="text-sm">
+              <div class="">
                 {{ item.name }}
               </div>
             </div>
